@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
-import { getPost } from '@/lib/posts';
+import { getPost, getPosts } from '@/lib/posts';
 
 export default async function BlogPost({ params }: any) {
   const post = await getPost(params.slug).catch(() => null);
@@ -29,4 +28,9 @@ export default async function BlogPost({ params }: any) {
       </article>
     </main>
   );
+}
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
